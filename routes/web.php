@@ -1,7 +1,26 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\adminMiddleware;
+use App\Http\Middleware\clientMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+// Admin space
+Route::middleware(['auth', 'verified',adminMiddleware::class])->group(function () {
+Route::get('/dashboard', function () { return view('admin/dashboard');})->name('dashboard');
+});
+// Client space
+Route::get('/home', function () {
+    return view('client/home');
+})->middleware(['auth', 'verified',clientMiddleware::class])->name('home');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role',['admin','client'])->default('client');
             $table->enum('state',['active','banned'])->default('active');
-            $table->integer('evaluation');
+            $table->integer('evaluation')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
