@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\ColocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\adminMiddleware;
 use App\Http\Middleware\clientMiddleware;
@@ -13,9 +14,11 @@ Route::middleware(['auth', 'verified',adminMiddleware::class])->group(function (
 Route::get('/dashboard', function () { return view('admin/dashboard');})->name('dashboard');
 });
 // Client space
-Route::get('/home', function () {
-    return view('client/home');
-})->middleware(['auth', 'verified',clientMiddleware::class])->name('home');
+Route::middleware(['auth', 'verified',clientMiddleware::class])->group(function () {
+Route::get('/home', [ColocationController::class,'index'])->name('home');
+        // Colocation part
+Route::resource('colocation',ColocationController::class);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

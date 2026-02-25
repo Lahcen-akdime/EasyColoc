@@ -2,7 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Schema;
+
+use function Symfony\Component\Clock\now;
 
 return new class extends Migration
 {
@@ -14,11 +18,11 @@ return new class extends Migration
         Schema::create('membership', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->enum('type',['member','owner']);
+            $table->enum('type',['member','owner'])->default('owner');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('colocation_id')->constrained()->onDelete('cascade');
-            $table->date('joined_at');
-            $table->date('left_at');
+            $table->date('joined_at')->default(Carbon::now());
+            $table->date('left_at')->nullable();
         });
     }
     /**
