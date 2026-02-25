@@ -25,7 +25,7 @@ class ColocationController extends Controller
     }
     public function store(Request $request){
         Validator::checkCreatePossibility(Auth::user());
-        if(!Validator::ValidateColocationName($request)){
+        if(!Validator::ValidateName($request)){
              return back()->with('error','You already exist in a colocation active') ;
         };
             try {

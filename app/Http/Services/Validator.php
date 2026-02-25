@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use function Laravel\Prompts\error;
 
 class Validator {
-    public static function ValidateColocationName(Request $request){
+    public static function ValidateName(Request $request){
         $request->validate([
         "name" => 'required|string|between:3,25'
         ]);

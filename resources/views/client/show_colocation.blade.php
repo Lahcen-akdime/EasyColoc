@@ -429,48 +429,15 @@ tailwind.config = {
             class="text-xs text-primarySoft hover:underline">+ Add</button>
         </div>
         <div class="space-y-2">
+          @foreach($colocation->categorie as $categorie)
           <div class="flex items-center justify-between py-2">
             <div class="flex items-center gap-2">
-              <span class="text-base">🏠</span>
-              <span class="text-sm text-slate-300">Rent</span>
+              <span class="text-base"></span>
+              <span class="text-sm text-slate-300">{{$categorie->title}}</span>
             </div>
             <span class="text-xs text-slate-500">1 expense</span>
           </div>
-          <div class="flex items-center justify-between py-2">
-            <div class="flex items-center gap-2">
-              <span class="text-base">🛒</span>
-              <span class="text-sm text-slate-300">Groceries</span>
-            </div>
-            <span class="text-xs text-slate-500">1 expense</span>
-          </div>
-          <div class="flex items-center justify-between py-2">
-            <div class="flex items-center gap-2">
-              <span class="text-base">⚡</span>
-              <span class="text-sm text-slate-300">Utilities</span>
-            </div>
-            <span class="text-xs text-slate-500">1 expense</span>
-          </div>
-          <div class="flex items-center justify-between py-2">
-            <div class="flex items-center gap-2">
-              <span class="text-base">🧹</span>
-              <span class="text-sm text-slate-300">Cleaning</span>
-            </div>
-            <span class="text-xs text-slate-500">1 expense</span>
-          </div>
-          <div class="flex items-center justify-between py-2">
-            <div class="flex items-center gap-2">
-              <span class="text-base">📶</span>
-              <span class="text-sm text-slate-300">Internet</span>
-            </div>
-            <span class="text-xs text-slate-500">1 expense</span>
-          </div>
-          <div class="flex items-center justify-between py-2">
-            <div class="flex items-center gap-2">
-              <span class="text-base">🎬</span>
-              <span class="text-sm text-slate-300">Entertainment</span>
-            </div>
-            <span class="text-xs text-slate-500">1 expense</span>
-          </div>
+          @endforeach
         </div>
       </section>
 
@@ -612,21 +579,28 @@ tailwind.config = {
       </button>
     </div>
 
-    <form method="POST" action="" class="space-y-4">
-
+    <form method="POST" action="{{route('categorie.store')}}" class="space-y-4">
+    @csrf
       <div>
         <label class="block text-sm font-medium text-slate-300 mb-1.5" for="cat-name">
           Category Name <span class="text-red-400">*</span>
         </label>
         <input class="input-field" id="cat-name" name="name" type="text" placeholder="e.g. Groceries" required>
       </div>
-
+      <input type="hidden" name="colocation_id" value="{{$colocation->id}}">
       <div>
         <label class="block text-sm font-medium text-slate-300 mb-1.5" for="cat-icon">
-          Icon <span class="text-slate-500 font-normal">(emoji)</span>
+          Icon <span class="text-slate-500 font-normal">(emoji) (optionel)</span>
         </label>
         <input class="input-field" id="cat-icon" name="icon" type="text" placeholder="e.g. 🛒" maxlength="2">
       </div>
+      @if($errors->any())
+        <ul>
+          @foreach($errors->all() as $error)
+          <li style="color:red">{{$error}}</li>
+          @endforeach
+        </ul>
+        @endif
 
       <div class="flex gap-3 pt-2">
         <button type="submit"
