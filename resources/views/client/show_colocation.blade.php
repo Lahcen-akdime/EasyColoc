@@ -151,7 +151,21 @@ tailwind.config = {
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Add Expense
         </button>
-        
+        <button onclick="openModal('modal-invitation')"
+          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Send invitation
+        </button>
+        @if($errors->any())
+        <ul>
+          @foreach($errors->all() as $error)
+          <li style="color:red">{{$error}}</li>
+          @endforeach
+        </ul>
+        @endif
+          @if(session('valide'))
+          <p style="color:green">{{session('valide')}}</p>
+          @endif
       </div>
     </div>
   </div>
@@ -180,7 +194,7 @@ tailwind.config = {
               <div class="flex items-center gap-2">
                 <p class="text-sm font-medium text-slate-100">{{$user->name}}</p>
                 <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">{{$user->pivot->type}}</span>
-                <span class="text-xs text-green-400 font-medium">{{$username=$user->name?'You':''}}</span>
+                <span class="text-xs text-green-400 font-medium">{{$username==$user->name?'You':''}}</span>
               </div>
             </div>
           </div>
@@ -196,12 +210,9 @@ tailwind.config = {
           <div class="flex items-center gap-2">
             <select class="select-field" aria-label="Filter by category">
               <option>All Categories</option>
-              <option>🛒 Groceries</option>
-              <option>⚡ Utilities</option>
-              <option>🧹 Cleaning</option>
-              <option>📶 Internet</option>
-              <option>🏠 Rent</option>
-              <option>🎬 Entertainment</option>
+              @foreach($colocation->categorie as $categorie)
+              <option>{{$categorie->title}}</option>
+              @endforeach
             </select>
             <select class="select-field" aria-label="Filter by month">
               <option>February 2025</option>
@@ -283,7 +294,7 @@ tailwind.config = {
               <span class="text-base"></span>
               <span class="text-sm text-slate-300">{{$categorie->title}}</span>
             </div>
-            <span class="text-xs text-slate-500">1 expense</span>
+            <span class="text-xs text-slate-500">{{$colocation->depences()->count()}} expense</span>
           </div>
           @endforeach
         </div>
@@ -427,6 +438,49 @@ tailwind.config = {
           Add Category
         </button>
         <button type="button" onclick="closeModal('modal-category')"
+          class="px-5 py-2.5 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition">
+          Cancel
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+<!-- ══════════════════════════════════
+     MODAL — INVITATION
+══════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-invitation" onclick="closeOnBackdrop(event, 'modal-invitation')">
+  <div class="modal">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-base font-semibold">Invite a member</h2>
+      <button onclick="closeModal('modal-invitation')" class="text-slate-400 hover:text-slate-200 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <form method="POST" action="{{route('invitation.store')}}" class="space-y-4">
+    @csrf
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1.5" for="cat-name">
+          Email user <span class="text-red-400">*</span>
+        </label>
+        <input class="input-field" id="cat-name" name="email" value="{{old('email')}}" type="text" placeholder="user@gmail.com" required>
+        <input type="hidden" name="colocation" value="{{$colocation}}">
+      </div>
+      @if($errors->any())
+        <ul>
+          @foreach($errors->all() as $error)
+          <li style="color:red">{{$error}}</li>
+          @endforeach
+        </ul>
+        @endif
+
+      <div class="flex gap-3 pt-2">
+        <button type="submit"
+          class="flex-1 py-2.5 rounded-xl bg-primarySoft text-white text-sm font-medium hover:bg-blue-600 transition">
+          Invite
+        </button>
+        <button type="button" onclick="closeModal('modal-invitation')"
           class="px-5 py-2.5 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition">
           Cancel
         </button>

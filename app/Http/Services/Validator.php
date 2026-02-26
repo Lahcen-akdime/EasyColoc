@@ -25,4 +25,9 @@ class Validator {
         "price" => 'required|numeric'
         ]);
     }
+    public static function validateEmail(Request $request){
+        $request->validate([
+        "email" => 'required|string|email'
+        ]);
+    }
 }

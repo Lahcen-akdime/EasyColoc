@@ -3,9 +3,11 @@
 use App\Http\Controllers\Client\CategorieController;
 use App\Http\Controllers\Client\ColocationController;
 use App\Http\Controllers\Client\DepenceController;
+use App\Http\Controllers\Client\InvitationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\adminMiddleware;
 use App\Http\Middleware\clientMiddleware;
+use App\Models\mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,6 +26,10 @@ Route::resource('colocation',ColocationController::class);
 Route::resource('categorie',CategorieController::class);
                 // Depence route
 Route::resource('depence',DepenceController::class);
+Route::resource('invitation',InvitationController::class);
+                    // Invitation route
+Route::get('/invitation/accept/{token}', [InvitationController::class, 'accept'])
+    ->name('invitation.accept');
 });
 
 Route::middleware('auth')->group(function () {
@@ -32,4 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Route::get('/test', function () {
+//     mail::sendEmail();
+//     return view('welcome');
+// });
 require __DIR__.'/auth.php';
