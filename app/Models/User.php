@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\colocation ;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
@@ -50,5 +51,8 @@ class User extends Authenticatable
     public function colocation():BelongsToMany
     {
         return $this->belongsToMany(colocation::class,'membership');
+    }
+    public function depence():HasMany {
+        return $this->hasMany(Depence::class);
     }
 }

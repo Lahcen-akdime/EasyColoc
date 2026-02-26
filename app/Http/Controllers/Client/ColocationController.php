@@ -44,13 +44,17 @@ class ColocationController extends Controller
                 DB::rollBack();
                 return $e->getMessage();
             }
-        }
+    }
     public function show(colocation $colocation){
-        return view('client/show_colocation',compact('colocation'));
+        $username = Auth::user()->name;
+        $totalePrice = $colocation->depences()->sum('price');
+        $totaleExpences = count($colocation->depences) ;
+        $sumMembers = count($colocation->user);
+        return view('client/show_colocation',compact('colocation','username','totalePrice','totaleExpences','sumMembers'));
     }
     public function destroy(){}
     public function edit(){}
-    public function update(Request $request ,colocation $colocation){
+    public function update(Request $request , colocation $colocation){
         $colocation->updateOrFail([
             'state' => 'inactive'
         ]);

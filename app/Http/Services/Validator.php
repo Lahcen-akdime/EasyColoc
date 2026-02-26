@@ -16,9 +16,13 @@ class Validator {
     }
     public static function checkCreatePossibility($user){
     $isActive = $user->colocation()->where('colocations.state','=','active')->exists();
-    if($isActive){ return false; }
-    // if(membership::where('user_id',Auth::user()->id)->where('state','active')->get()){
-    //     return error('You already exist in a colocation active') ;
-    // };
+    if($isActive){
+         return false; 
+    }
+    }
+    public static function ValidatePrice(Request $request){
+        $request->validate([
+        "price" => 'required|numeric'
+        ]);
     }
 }

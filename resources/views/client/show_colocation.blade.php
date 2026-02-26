@@ -131,7 +131,7 @@ tailwind.config = {
           <span class="text-xs font-semibold text-green-400 uppercase tracking-widest">Active</span>
         </div>
         <h1 class="text-2xl font-semibold tracking-tight">{{$colocation->name}}</h1>
-        <p class="text-slate-400 text-sm mt-1">75 Rue de la Roquette, 75011 Paris · Since Oct 2024</p>
+        <b class="text-slate-400 text-sm mt-1">____________________________</b>
       </div>
       <form method="post" action="{{route('colocation.update',$colocation->id)}}">
         @csrf 
@@ -165,94 +165,26 @@ tailwind.config = {
       <!-- MEMBERS -->
       <section class="bg-surface border border-borderSoft rounded-2xl p-6 card-hover fade-in">
         <div class="flex items-center justify-between mb-5">
-          <h2 class="text-base font-semibold">Members <span class="text-slate-500 font-normal text-sm ml-1">5</span></h2>
+          <h2 class="text-base font-semibold">Members <span class="text-slate-500 font-normal text-sm ml-1">{{$sumMembers}}</span></h2>
           <button class="text-xs text-primarySoft hover:underline">Invite member</button>
         </div>
 
         <div class="divide-y divide-borderSoft">
 
           <!-- Member row -->
+           @foreach($colocation->user as $user)
           <div class="row-hover flex items-center gap-4 py-3 px-2 -mx-2">
             <img src="https://ui-avatars.com/api/?name=Alex+M&background=1d4ed8&color=bfdbfe&bold=true&size=60"
                  alt="Alex" class="w-10 h-10 rounded-full flex-shrink-0 object-cover">
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2">
-                <p class="text-sm font-medium text-slate-100">Alex Martin</p>
-                <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">★ Owner</span>
-                <span class="text-xs text-green-400 font-medium">You</span>
+                <p class="text-sm font-medium text-slate-100">{{$user->name}}</p>
+                <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">{{$user->pivot->type}}</span>
+                <span class="text-xs text-green-400 font-medium">{{$username=$user->name?'You':''}}</span>
               </div>
-              <p class="text-xs text-slate-500 mt-0.5">alex.martin@email.com</p>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-xs text-slate-500">Balance</p>
-              <p class="text-sm font-semibold text-green-400">+18€</p>
             </div>
           </div>
-
-          <div class="row-hover flex items-center gap-4 py-3 px-2 -mx-2">
-            <img src="https://ui-avatars.com/api/?name=Sarah+K&background=0f766e&color=99f6e4&bold=true&size=60"
-                 alt="Sarah" class="w-10 h-10 rounded-full flex-shrink-0 object-cover">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <p class="text-sm font-medium text-slate-100">Sarah Kowalski</p>
-                <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full">Member</span>
-              </div>
-              <p class="text-xs text-slate-500 mt-0.5">sarah.k@email.com</p>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-xs text-slate-500">Balance</p>
-              <p class="text-sm font-semibold text-red-400">−34,50€</p>
-            </div>
-          </div>
-
-          <div class="row-hover flex items-center gap-4 py-3 px-2 -mx-2">
-            <img src="https://ui-avatars.com/api/?name=Marc+D&background=7c3aed&color=ddd6fe&bold=true&size=60"
-                 alt="Marc" class="w-10 h-10 rounded-full flex-shrink-0 object-cover">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <p class="text-sm font-medium text-slate-100">Marc Dupont</p>
-                <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full">Member</span>
-              </div>
-              <p class="text-xs text-slate-500 mt-0.5">marc.d@email.com</p>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-xs text-slate-500">Balance</p>
-              <p class="text-sm font-semibold text-green-400">+12€</p>
-            </div>
-          </div>
-
-          <div class="row-hover flex items-center gap-4 py-3 px-2 -mx-2">
-            <img src="https://ui-avatars.com/api/?name=Julie+P&background=92400e&color=fde68a&bold=true&size=60"
-                 alt="Julie" class="w-10 h-10 rounded-full flex-shrink-0 object-cover">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <p class="text-sm font-medium text-slate-100">Julie Petit</p>
-                <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full">Member</span>
-              </div>
-              <p class="text-xs text-slate-500 mt-0.5">julie.p@email.com</p>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-xs text-slate-500">Balance</p>
-              <p class="text-sm font-semibold text-slate-400">0€</p>
-            </div>
-          </div>
-
-          <div class="row-hover flex items-center gap-4 py-3 px-2 -mx-2">
-            <img src="https://ui-avatars.com/api/?name=Tom+B&background=9f1239&color=fecdd3&bold=true&size=60"
-                 alt="Tom" class="w-10 h-10 rounded-full flex-shrink-0 object-cover">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <p class="text-sm font-medium text-slate-100">Tom Bernard</p>
-                <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full">Member</span>
-              </div>
-              <p class="text-xs text-slate-500 mt-0.5">tom.b@email.com</p>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-xs text-slate-500">Balance</p>
-              <p class="text-sm font-semibold text-red-400">−6€</p>
-            </div>
-          </div>
-
+          @endforeach
         </div>
       </section>
 
@@ -282,114 +214,30 @@ tailwind.config = {
         <div class="divide-y divide-borderSoft">
 
           <!-- Expense row -->
+          @foreach($colocation->depences as $depence)
           <div class="row-hover flex items-center gap-4 py-3.5 px-2 -mx-2">
             <div class="w-9 h-9 rounded-xl bg-pink-500/10 flex items-center justify-center text-lg flex-shrink-0">🏠</div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-slate-100">Loyer Février 2025</p>
+              <p class="text-sm font-medium text-slate-100">{{$depence->title}}</p>
               <div class="flex items-center gap-2 mt-0.5">
                 <img src="https://ui-avatars.com/api/?name=Alex+M&background=1d4ed8&color=bfdbfe&bold=true&size=40"
                      alt="" class="w-4 h-4 rounded-full">
-                <span class="text-xs text-slate-400">Alex · 1 Feb · split ÷5</span>
-                <span class="text-xs bg-soft text-slate-400 px-2 py-0.5 rounded-full">🏠 Rent</span>
+                <span class="text-xs text-slate-400">{{$depence->user->name}} · {{$depence->created_at}}</span>
+                <span class="text-xs bg-soft text-slate-400 px-2 py-0.5 rounded-full"> {{$depence->categorie->title}}</span>
               </div>
             </div>
             <div class="text-right flex-shrink-0">
-              <p class="text-sm font-semibold text-slate-100">3 250€</p>
+              <p class="text-sm font-semibold text-slate-100">{{$depence->price}} DH</p>
               <p class="text-xs text-slate-500">650€ / each</p>
             </div>
           </div>
-
-          <div class="row-hover flex items-center gap-4 py-3.5 px-2 -mx-2">
-            <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center text-lg flex-shrink-0">⚡</div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-slate-100">Facture EDF Janvier</p>
-              <div class="flex items-center gap-2 mt-0.5">
-                <img src="https://ui-avatars.com/api/?name=Sarah+K&background=0f766e&color=99f6e4&bold=true&size=40"
-                     alt="" class="w-4 h-4 rounded-full">
-                <span class="text-xs text-slate-400">Sarah · 3 Feb · split ÷4</span>
-                <span class="text-xs bg-soft text-slate-400 px-2 py-0.5 rounded-full">⚡ Utilities</span>
-              </div>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-sm font-semibold text-slate-100">82,40€</p>
-              <p class="text-xs text-slate-500">20,60€ / each</p>
-            </div>
-          </div>
-
-          <div class="row-hover flex items-center gap-4 py-3.5 px-2 -mx-2">
-            <div class="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center text-lg flex-shrink-0">🛒</div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-slate-100">Courses Franprix</p>
-              <div class="flex items-center gap-2 mt-0.5">
-                <img src="https://ui-avatars.com/api/?name=Sarah+K&background=0f766e&color=99f6e4&bold=true&size=40"
-                     alt="" class="w-4 h-4 rounded-full">
-                <span class="text-xs text-slate-400">Sarah · 7 Feb · split ÷3</span>
-                <span class="text-xs bg-soft text-slate-400 px-2 py-0.5 rounded-full">🛒 Groceries</span>
-              </div>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-sm font-semibold text-slate-100">54€</p>
-              <p class="text-xs text-slate-500">18€ / each</p>
-            </div>
-          </div>
-
-          <div class="row-hover flex items-center gap-4 py-3.5 px-2 -mx-2">
-            <div class="w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center text-lg flex-shrink-0">📶</div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-slate-100">Fibre Orange — Fév.</p>
-              <div class="flex items-center gap-2 mt-0.5">
-                <img src="https://ui-avatars.com/api/?name=Marc+D&background=7c3aed&color=ddd6fe&bold=true&size=40"
-                     alt="" class="w-4 h-4 rounded-full">
-                <span class="text-xs text-slate-400">Marc · 10 Feb · split ÷5</span>
-                <span class="text-xs bg-soft text-slate-400 px-2 py-0.5 rounded-full">📶 Internet</span>
-              </div>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-sm font-semibold text-slate-100">39,99€</p>
-              <p class="text-xs text-slate-500">8€ / each</p>
-            </div>
-          </div>
-
-          <div class="row-hover flex items-center gap-4 py-3.5 px-2 -mx-2">
-            <div class="w-9 h-9 rounded-xl bg-green-500/10 flex items-center justify-center text-lg flex-shrink-0">🧹</div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-slate-100">Produits ménagers</p>
-              <div class="flex items-center gap-2 mt-0.5">
-                <img src="https://ui-avatars.com/api/?name=Alex+M&background=1d4ed8&color=bfdbfe&bold=true&size=40"
-                     alt="" class="w-4 h-4 rounded-full">
-                <span class="text-xs text-slate-400">Alex · 14 Feb · split ÷4</span>
-                <span class="text-xs bg-soft text-slate-400 px-2 py-0.5 rounded-full">🧹 Cleaning</span>
-              </div>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-sm font-semibold text-slate-100">28€</p>
-              <p class="text-xs text-slate-500">7€ / each</p>
-            </div>
-          </div>
-
-          <div class="row-hover flex items-center gap-4 py-3.5 px-2 -mx-2">
-            <div class="w-9 h-9 rounded-xl bg-slate-500/10 flex items-center justify-center text-lg flex-shrink-0">🎬</div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-slate-100">Netflix (abonnement)</p>
-              <div class="flex items-center gap-2 mt-0.5">
-                <img src="https://ui-avatars.com/api/?name=Alex+M&background=1d4ed8&color=bfdbfe&bold=true&size=40"
-                     alt="" class="w-4 h-4 rounded-full">
-                <span class="text-xs text-slate-400">Alex · 17 Feb · split ÷3</span>
-                <span class="text-xs bg-soft text-slate-400 px-2 py-0.5 rounded-full">🎬 Entertainment</span>
-              </div>
-            </div>
-            <div class="text-right flex-shrink-0">
-              <p class="text-sm font-semibold text-slate-100">18€</p>
-              <p class="text-xs text-slate-500">6€ / each</p>
-            </div>
-          </div>
-
+         @endforeach
         </div>
 
         <!-- Total row -->
         <div class="mt-4 pt-4 border-t border-borderSoft flex items-center justify-between">
-          <span class="text-sm text-slate-400">Total this month</span>
-          <span class="text-base font-semibold text-slate-100">3 472,39€</span>
+          <span class="text-sm text-slate-400">Total </span>
+          <span class="text-base font-semibold text-slate-100">{{$totalePrice}} DH</span>
         </div>
 
       </section>
@@ -403,20 +251,20 @@ tailwind.config = {
         <h3 class="text-base font-semibold mb-4">Summary</h3>
         <div class="divide-y divide-borderSoft">
           <div class="flex justify-between items-center py-3">
-            <span class="text-slate-400 text-sm">Monthly Rent</span>
-            <span class="font-semibold text-blue-400">650€</span>
+            <span class="text-slate-400 text-sm">Total Expences</span>
+            <span class="font-semibold text-blue-400">{{$totaleExpences}}</span>
           </div>
           <div class="flex justify-between items-center py-3">
-            <span class="text-slate-400 text-sm">Total Expenses</span>
-            <span class="font-semibold">3 472,39€</span>
+            <span class="text-slate-400 text-sm">Sum Expenses</span>
+            <span class="font-semibold">{{$totalePrice}} DH</span>
           </div>
           <div class="flex justify-between items-center py-3">
             <span class="text-slate-400 text-sm">Your Share</span>
-            <span class="font-semibold text-red-400">−34,50€</span>
+            <span class="font-semibold text-red-400">−DH</span>
           </div>
           <div class="flex justify-between items-center pt-3">
             <span class="text-slate-400 text-sm">Members</span>
-            <span class="font-semibold">5</span>
+            <span class="font-semibold">{{$sumMembers}}</span>
           </div>
         </div>
       </section>
@@ -479,13 +327,14 @@ tailwind.config = {
       </button>
     </div>
 
-    <form method="POST" action="" class="space-y-4">
-
+    <form method="POST" action="{{route('depence.store')}}" class="space-y-4">
+  @csrf
+  @method('POST')
       <div>
         <label class="block text-sm font-medium text-slate-300 mb-1.5" for="exp-title">
           Title <span class="text-red-400">*</span>
         </label>
-        <input class="input-field" id="exp-title" name="title" type="text" placeholder="e.g. Courses Franprix" required>
+        <input class="input-field" id="exp-title" name="name" value="{{old('name')}}" type="text" placeholder="e.g. Courses Franprix" required>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
@@ -493,28 +342,20 @@ tailwind.config = {
           <label class="block text-sm font-medium text-slate-300 mb-1.5" for="exp-amount">
             Amount (€) <span class="text-red-400">*</span>
           </label>
-          <input class="input-field" id="exp-amount" name="amount" type="number" min="0" step="0.01" placeholder="0.00" required>
+          <input class="input-field" id="exp-amount" name="price" value="{{old('price')}}" type="number" min="0" step="0.01" placeholder="0.00" required>
         </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-300 mb-1.5" for="exp-date">
-            Date <span class="text-red-400">*</span>
-          </label>
-          <input class="input-field" id="exp-date" name="date" type="date" required>
-        </div>
+        
       </div>
 
       <div>
         <label class="block text-sm font-medium text-slate-300 mb-1.5" for="exp-category">
           Category <span class="text-red-400">*</span>
         </label>
-        <select class="input-field" id="exp-category" name="category_id" required>
+        <select class="input-field" id="exp-category" name='categorie_id' required>
           <option value="">Select a category…</option>
-          <option>🏠 Rent</option>
-          <option>🛒 Groceries</option>
-          <option>⚡ Utilities</option>
-          <option>🧹 Cleaning</option>
-          <option>📶 Internet</option>
-          <option>🎬 Entertainment</option>
+          @foreach($colocation->categorie as $categorie)
+          <option name='categorie_id'  value="{{$categorie->id}}">{{$categorie->title}}</option>
+          @endforeach
         </select>
       </div>
 
@@ -522,34 +363,12 @@ tailwind.config = {
         <label class="block text-sm font-medium text-slate-300 mb-1.5" for="exp-paid-by">
           Paid by <span class="text-red-400">*</span>
         </label>
-        <select class="input-field" id="exp-paid-by" name="paid_by" required>
+        <select class="input-field" id="exp-paid-by" name='user_id' required>
           <option value="">Select member…</option>
-          <option value="1">Alex Martin (You)</option>
-          <option value="2">Sarah Kowalski</option>
-          <option value="3">Marc Dupont</option>
-          <option value="4">Julie Petit</option>
-          <option value="5">Tom Bernard</option>
+          @foreach($colocation->user as $user)
+          <option name='user_id' value="{{$user->id}}">{{$user->name}}</option>
+          @endforeach
         </select>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-slate-300 mb-1.5" for="exp-split">
-          Split between
-        </label>
-        <select class="input-field" id="exp-split" name="split_type">
-          <option value="all">All members (÷5)</option>
-          <option value="2">2 members</option>
-          <option value="3">3 members</option>
-          <option value="4">4 members</option>
-          <option value="custom">Custom…</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-slate-300 mb-1.5" for="exp-note">
-          Note <span class="text-slate-500 font-normal">(optional)</span>
-        </label>
-        <input class="input-field" id="exp-note" name="note" type="text" placeholder="Any extra detail…">
       </div>
 
       <div class="flex gap-3 pt-2">
@@ -585,7 +404,7 @@ tailwind.config = {
         <label class="block text-sm font-medium text-slate-300 mb-1.5" for="cat-name">
           Category Name <span class="text-red-400">*</span>
         </label>
-        <input class="input-field" id="cat-name" name="name" type="text" placeholder="e.g. Groceries" required>
+        <input class="input-field" id="cat-name" name="name" value="{{old('name')}}" type="text" placeholder="e.g. Groceries" required>
       </div>
       <input type="hidden" name="colocation_id" value="{{$colocation->id}}">
       <div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Client\CategorieController;
 use App\Http\Controllers\Client\ColocationController;
+use App\Http\Controllers\Client\DepenceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\adminMiddleware;
 use App\Http\Middleware\clientMiddleware;
@@ -21,6 +22,8 @@ Route::get('/home', [ColocationController::class,'index'])->name('home');
 Route::resource('colocation',ColocationController::class);
             // Categorie route
 Route::resource('categorie',CategorieController::class);
+                // Depence route
+Route::resource('depence',DepenceController::class);
 });
 
 Route::middleware('auth')->group(function () {
