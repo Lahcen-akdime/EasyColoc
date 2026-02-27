@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invitation extends Model
 {
-    public $fillable = ['email','token','colocation_id'];
+    public $fillable = ['email','token','colocation_id','state'];
 }

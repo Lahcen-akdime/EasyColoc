@@ -25,9 +25,9 @@ Route::resource('colocation',ColocationController::class);
             // Categorie route
 Route::resource('categorie',CategorieController::class);
                 // Depence route
-Route::resource('depence',DepenceController::class);
+                Route::resource('depence',DepenceController::class);
+                // Invitation route
 Route::resource('invitation',InvitationController::class);
-                    // Invitation route
 Route::get('/invitation/accept/{token}', [InvitationController::class, 'accept'])
     ->name('invitation.accept');
 });

@@ -77,11 +77,21 @@ tailwind.config = {
       <h1 class="text-3xl font-semibold tracking-tight">My Colocations</h1>
       <p class="text-slate-400 mt-1.5 text-sm">Manage your shared apartments and access your current one.</p>
     </div>
+     @if($errors->any())
+        <ul>
+          @foreach($errors->all() as $error)
+          <li style="color:red">{{$error}}</li>
+          @endforeach
+        </ul>
+        @endif
+         @if(session('error'))
+          <p style="color:red">{{session('error')}}</p>
+        @endif
     <div class="flex items-center gap-3">
       <div class="flex items-center gap-2 bg-surface border border-borderSoft rounded-full px-3 py-1.5">
         <img src="https://ui-avatars.com/api/?name=Alex+M&background=334155&color=94a3b8&bold=true&size=60"
              alt="Alex M" class="w-7 h-7 rounded-full">
-        <span class="text-sm text-slate-300 font-medium">Alex M.</span>
+        <span class="text-sm text-slate-300 font-medium">{{$username}}</span>
       </div>
       <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -99,71 +109,6 @@ tailwind.config = {
 
     <!-- ════ LEFT COLUMN ════ -->
     <div class="lg:col-span-2 space-y-6">
-
-      <!-- ACTIVE COLOCATION -->
-      <section class="bg-surface border border-borderSoft rounded-2xl p-7 card-hover fade-in">
-
-        <div class="flex items-center gap-2 mb-5">
-          <span class="status-dot"></span>
-          <span class="text-xs font-semibold text-green-400 uppercase tracking-widest">Active</span>
-        </div>
-
-        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
-          <div>
-            <h2 class="text-xl font-semibold">Appart' Paris 11e</h2>
-            <p class="text-slate-400 text-sm mt-1">75 Rue de la Roquette, 75011 Paris</p>
-            <p class="text-slate-500 text-xs mt-1">
-              Since October 2024 ·
-              <span class="text-amber-400 font-medium">★ Owner</span>
-            </p>
-          </div>
-
-          <div class="flex flex-col sm:items-end gap-3 flex-shrink-0">
-            <div class="flex gap-6">
-              <div class="text-right">
-                <p class="text-xs text-slate-500 uppercase tracking-wide">Monthly Rent</p>
-                <p class="text-lg font-semibold text-blue-400">650€</p>
-              </div>
-              <div class="text-right">
-                <p class="text-xs text-slate-500 uppercase tracking-wide">My Balance</p>
-                <p class="text-lg font-semibold text-red-400">−34,50€</p>
-              </div>
-            </div>
-            <button class="px-5 py-2.5 rounded-xl bg-primarySoft text-white text-sm font-medium hover:bg-blue-600 transition">
-              Enter Colocation →
-            </button>
-          </div>
-        </div>
-
-        <div class="mt-5 pt-4 border-t border-borderSoft flex items-center justify-between flex-wrap gap-3">
-          <div class="flex items-center gap-3">
-            <div class="avatar-stack">
-              <img src="https://ui-avatars.com/api/?name=Alex+M&background=1d4ed8&color=bfdbfe&bold=true&size=50" alt="Alex">
-              <img src="https://ui-avatars.com/api/?name=Sarah+K&background=0f766e&color=99f6e4&bold=true&size=50" alt="Sarah">
-              <img src="https://ui-avatars.com/api/?name=Marc+D&background=7c3aed&color=ddd6fe&bold=true&size=50" alt="Marc">
-              <img src="https://ui-avatars.com/api/?name=Julie+P&background=92400e&color=fde68a&bold=true&size=50" alt="Julie">
-              <div class="extra">+1</div>
-            </div>
-            <span class="text-sm text-slate-400">5 members</span>
-          </div>
-          <span class="text-xs text-slate-500 bg-soft px-3 py-1 rounded-full">Paris 11e</span>
-        </div>
-      </section>
-
-      <!-- NO ACTIVE — empty state (uncomment when user has no colocation)
-      <section class="bg-surface border border-borderSoft rounded-2xl p-10 text-center fade-in">
-        <h2 class="text-xl font-medium mb-3">No Active Colocation</h2>
-        <p class="text-slate-400 mb-7 text-sm">Create a new one or join an existing colocation with an invitation token.</p>
-        <div class="flex justify-center gap-3 flex-wrap">
-          <button class="px-6 py-3 rounded-xl bg-primarySoft text-white text-sm font-medium hover:bg-blue-600 transition">
-            Create Colocation
-          </button>
-          <button class="px-6 py-3 rounded-xl border border-borderSoft text-slate-200 text-sm font-medium hover:bg-soft transition">
-            Join via Token
-          </button>
-        </div>
-      </section>
-      -->
 
       <!-- ALL COLOCATIONS LIST -->
       <section class="bg-surface border border-borderSoft rounded-2xl p-7 fade-in">

@@ -300,6 +300,24 @@ tailwind.config = {
         </div>
       </section>
 
+      <!-- Paiment -->
+       <section class="bg-surface border border-borderSoft rounded-2xl p-6 fade-in">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-semibold">Paiment</h3>
+        </div>
+        <div class="space-y-2">
+          @foreach($colocation->categorie as $categorie)
+          <div class="flex items-center justify-between py-2">
+            <div class="flex items-center gap-2">
+              <span class="text-base"></span>
+              <span class="text-sm text-slate-300">{{$categorie->title}}</span>
+            </div>
+            <span class="text-xs text-slate-500">{{$colocation->depences()->count()}} expense</span>
+          </div>
+          @endforeach
+        </div>
+      </section>
+
       <!-- Quick actions -->
       <section class="bg-surface border border-borderSoft rounded-2xl p-6 fade-in">
         <h3 class="text-base font-semibold mb-4">Actions</h3>

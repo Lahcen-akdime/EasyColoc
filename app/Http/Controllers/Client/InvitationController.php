@@ -61,7 +61,7 @@ class InvitationController extends Controller
      */
     public function accept($token)
     {
-        $user = Auth::user();
+    $user = Auth::user();
     $invitation = Invitation::where('token', $token)
                             ->where('state', 'pending')
                             ->first();

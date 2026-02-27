@@ -8,3 +8,4 @@
    style="display:inline-block;padding:10px 20px;background:#2563eb;color:#fff;text-decoration:none;border-radius:5px;">
    Accept Invitation
 </a>
+<p>the link of invitation:</p>
