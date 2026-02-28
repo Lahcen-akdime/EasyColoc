@@ -49,10 +49,11 @@ class ColocationController extends Controller
     }
     public function show(colocation $colocation){
         $username = Auth::user()->name;
+        $authuser = Auth::user();
         $totalePrice = $colocation->depences()->sum('price');
         $totaleExpences = count($colocation->depences) ;
         $sumMembers = count($colocation->user);
-        return view('client/show_colocation',compact('colocation','username','totalePrice','totaleExpences','sumMembers'));
+        return view('client/show_colocation',compact('colocation','authuser','totalePrice','totaleExpences','sumMembers'));
     }
     public function destroy(){}
     public function edit(){}

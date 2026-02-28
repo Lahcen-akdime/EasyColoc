@@ -141,11 +141,15 @@ tailwind.config = {
         </button>
       </form>
       <div class="flex items-center gap-2 flex-wrap">
+        @foreach($colocation->user as $user)
+        @if($user->pivot->type=='owner' && $user->name==$authuser->name)
         <button onclick="openModal('modal-category')"
           class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           Add Category
         </button>
+        @endif
+        @endforeach
         <button onclick="openModal('modal-expense')"
           class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primarySoft text-white text-sm font-medium hover:bg-blue-600 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -197,7 +201,7 @@ tailwind.config = {
                 @else
                 <span class="text-xs bg-blue-500 text-amber-50 border border-blue-900 px-2 py-0.5 rounded-full">{{$user->pivot->type}}</span>
                 @endif
-                <span class="text-xs text-green-400 font-medium">{{$username==$user->name?'You':''}}</span>
+                <span class="text-xs text-green-400 font-medium">{{$authuser->name==$user->name?'You':''}}</span>
               </div>
             </div>
           </div>
@@ -294,7 +298,7 @@ tailwind.config = {
             <span class="text-sm font-medium text-white truncate">{{ $paiment->touser->name }} ( {{$depence->title}} ) </span>
           </div>
 
-          @if($username==$paiment->fromuser->name )
+          @if($authuser->name==$paiment->fromuser->name )
           <form action="{{route('paiment.update',$paiment)}}" method="POST">
             @csrf
             @method('PATCH')
@@ -374,11 +378,15 @@ tailwind.config = {
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Add Expense
           </button>
+        @foreach($colocation->user as $user)
+        @if($user->pivot->type=='owner' && $user->name==$authuser->name)
           <button onclick="openModal('modal-category')"
             class="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             Add Category
           </button>
+        @endif
+        @endforeach
           <button
             class="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
