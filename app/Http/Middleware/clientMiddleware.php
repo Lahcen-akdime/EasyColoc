@@ -16,6 +16,7 @@ class clientMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if(Auth::user()->is_banned==)
         if(Auth::user()->role=='client'){
             return $next($request);
         }

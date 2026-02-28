@@ -291,7 +291,7 @@ tailwind.config = {
               </svg>
             </div>
 
-            <span class="text-sm font-medium text-white truncate">{{ $paiment->touser->name }}</span>
+            <span class="text-sm font-medium text-white truncate">{{ $paiment->touser->name }} ( {{$depence->title}} ) </span>
           </div>
 
           @if($username==$paiment->fromuser->name )
@@ -308,7 +308,6 @@ tailwind.config = {
           @else
           <span class="text-xs bg-red-600 text-white border border-red-900 px-2 py-0.5 rounded-full">{{$paiment->is_payed}}</span>
           @endif
-          
         </div>
         @endif
       @endforeach
