@@ -16,8 +16,11 @@ class clientMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->is_banned==)
-        if(Auth::user()->role=='client'){
+        if(Auth::user()->is_banned==true){
+        Auth::logout();
+        return to_route('login')->with('error','You are banned by the admin');
+        }
+        elseif(Auth::user()->role=='client'){
             return $next($request);
         }
         else{
