@@ -19,6 +19,7 @@ class ColocationController extends Controller
     public function index(){
         $username = Auth::user()->name;
         $colocations = Auth::user()->colocation;
+        
         return view('client/home',compact('colocations','username'));
     }
     public function create(){

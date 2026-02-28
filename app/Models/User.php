@@ -55,4 +55,7 @@ class User extends Authenticatable
     public function depence():HasMany {
         return $this->hasMany(Depence::class);
     }
+    public function depencePaiment() : BelongsToMany {
+        return $this->belongsToMany(Depence::class,'Paiment');
+    }
 }

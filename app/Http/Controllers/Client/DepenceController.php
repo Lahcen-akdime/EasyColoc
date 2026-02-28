@@ -3,9 +3,14 @@ namespace App\Http\Controllers\Client;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\Calculator;
 use App\Http\Services\Validator;
 use App\Models\depence;
+use App\Models\Paiment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use PDOException;
 
 class DepenceController extends Controller
 {
@@ -32,13 +37,33 @@ class DepenceController extends Controller
     {
         Validator::ValidateName($request);
         Validator::ValidatePrice($request);
-        depence::create([
+        try {
+                DB::beginTransaction();
+        $depence = depence::create([
         'title'=>$request->name ,
         'price'=>$request->price ,
         'categorie_id' => $request->categorie_id ,
         'user_id' => $request->user_id
         ]);
+        $colocationUsers = json_decode($request->colocation)->user ;
+        $amount = Calculator::calculateAmount($request->price,count($colocationUsers));
+        
+        foreach ($colocationUsers as $user) {
+            if($user->id != $request->user_id){
+                Paiment::create([
+                'from_user_id'=> $user->id ,
+                'to_user_id' => $request->user_id ,
+                'depence_id' => $depence->id ,
+                'amount' => $amount
+                ]);
+            }
+        }
+        DB::commit();
         return back();
+         } catch (PDOException $e) {
+                DB::rollBack();
+                return $e->getMessage();
+            }
     }
 
     /**

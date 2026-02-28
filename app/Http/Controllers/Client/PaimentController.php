@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use App\Models\Paiment;
 use Illuminate\Http\Request;
 
@@ -50,9 +51,10 @@ class PaimentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Paiment $paiment)
+    public function update(Paiment $paiment)
     {
-        //
+        $paiment->update(['is_payed'=>'payed']);
+        return back()->with('valide','Paiment Stored Seccessfuly !');
     }
 
     /**

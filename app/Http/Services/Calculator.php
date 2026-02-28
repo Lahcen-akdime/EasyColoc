@@ -1,6 +1,8 @@
 <?php
+namespace App\Http\Services ;
+
 class Calculator{
-    public function calculateAmount($price,$usersNb):float{
+    public static function calculateAmount($price,$usersNb):float{
     $amount = $price / $usersNb ;
     return $amount ;
     }

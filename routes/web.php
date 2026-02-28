@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Client\Controllers\PaimentController;
 use App\Http\Controllers\Client\CategorieController;
 use App\Http\Controllers\Client\ColocationController;
 use App\Http\Controllers\Client\DepenceController;
 use App\Http\Controllers\Client\InvitationController;
+use App\Http\Controllers\Client\PaimentController as ClientPaimentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\adminMiddleware;
 use App\Http\Middleware\clientMiddleware;
@@ -30,6 +32,8 @@ Route::resource('categorie',CategorieController::class);
 Route::resource('invitation',InvitationController::class);
 Route::get('/invitation/accept/{token}', [InvitationController::class, 'accept'])
     ->name('invitation.accept');
+                    // Paiment route
+Route::resource('paiment',ClientPaimentController::class);
 });
 
 Route::middleware('auth')->group(function () {

@@ -20,4 +20,5 @@ class Colocation extends Model
     public function depences():HasManyThrough{
         return $this->hasManyThrough(Depence::class,Categorie::class);
     }
+    
 }

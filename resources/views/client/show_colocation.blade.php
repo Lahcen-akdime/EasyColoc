@@ -188,12 +188,15 @@ tailwind.config = {
           <!-- Member row -->
            @foreach($colocation->user as $user)
           <div class="row-hover flex items-center gap-4 py-3 px-2 -mx-2">
-            <img src="https://ui-avatars.com/api/?name=Alex+M&background=1d4ed8&color=bfdbfe&bold=true&size=60"
-                 alt="Alex" class="w-10 h-10 rounded-full flex-shrink-0 object-cover">
+            <div class="w-10 h-10 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 text-xs font-semibold flex-shrink-0">{{substr($user->name,0,2)}}</div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2">
                 <p class="text-sm font-medium text-slate-100">{{$user->name}}</p>
-                <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">{{$user->pivot->type}}</span>
+                @if($user->pivot->type=='owner')
+                <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">&nbsp; {{ $user->pivot->type}} 👑</span>
+                @else
+                <span class="text-xs bg-blue-500 text-amber-50 border border-blue-900 px-2 py-0.5 rounded-full">{{$user->pivot->type}}</span>
+                @endif
                 <span class="text-xs text-green-400 font-medium">{{$username==$user->name?'You':''}}</span>
               </div>
             </div>
@@ -252,6 +255,67 @@ tailwind.config = {
         </div>
 
       </section>
+       <!-- Paiment -->
+      <section class="bg-surface border border-borderSoft rounded-2xl p-6 fade-in">
+  
+  {{-- Header --}}
+  <div class="flex items-center gap-3 mb-6">
+    <div class="w-9 h-9 rounded-xl bg-primarySoft/20 border border-primarySoft/30 flex items-center justify-center text-base flex-shrink-0">
+      💸
+    </div>
+    <div>
+      <h3 class="font-semibold text-sm text-white tracking-wide" style="font-family: 'Syne', sans-serif;">Remboursements</h3>
+      <p class="text-xs text-gray-500 font-light mt-0.5">Qui doit rembourser qui ?</p>
+    </div>
+  </div>
+
+  {{-- Debt List --}}
+  <div class="flex flex-col gap-3">
+    @foreach($colocation->depences as $depence)
+      @foreach($depence->paiments as $paiment)
+      @if($paiment->is_payed == 'unpayed')
+        <div class="flex items-center gap-3 bg-white/5 border border-white/[0.07] hover:border-primarySoft/30 rounded-2xl px-4 py-3 transition-all duration-200 group">
+          
+          {{-- From Avatar --}}
+          <div class="w-8 h-8 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 text-xs font-semibold flex-shrink-0">
+            {{ strtoupper(substr($paiment->fromuser->name, 0, 2)) }}
+          </div>
+
+          {{-- Transfer Info --}}
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <span class="text-sm font-medium text-white truncate">{{ $paiment->fromuser->name }}</span>
+            
+            <div class="flex items-center gap-1 bg-primarySoft/10 border border-primarySoft/20 rounded-full px-2 py-0.5 flex-shrink-0">
+              <svg class="w-3 h-3 text-primarySoft" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </div>
+
+            <span class="text-sm font-medium text-white truncate">{{ $paiment->touser->name }}</span>
+          </div>
+
+          @if($username==$paiment->fromuser->name )
+          <form action="{{route('paiment.update',$paiment)}}" method="POST">
+            @csrf
+            @method('PATCH')
+            <button type="submit" class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 bg-primarySoft hover:bg-blue-600 text-white text-xs font-medium rounded-xl transition-all duration-150 hover:scale-105 hover:shadow-lg hover:shadow-primarySoft/20 active:scale-95">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+              Marquer payé
+            </button>
+          </form>
+          @else
+          <span class="text-xs bg-red-600 text-white border border-red-900 px-2 py-0.5 rounded-full">{{$paiment->is_payed}}</span>
+          @endif
+          
+        </div>
+        @endif
+      @endforeach
+    @endforeach
+  </div>
+
+</section>
     </div>
 
     <!-- ════ RIGHT SIDEBAR ════ -->
@@ -300,23 +364,7 @@ tailwind.config = {
         </div>
       </section>
 
-      <!-- Paiment -->
-       <section class="bg-surface border border-borderSoft rounded-2xl p-6 fade-in">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-base font-semibold">Paiment</h3>
-        </div>
-        <div class="space-y-2">
-          @foreach($colocation->categorie as $categorie)
-          <div class="flex items-center justify-between py-2">
-            <div class="flex items-center gap-2">
-              <span class="text-base"></span>
-              <span class="text-sm text-slate-300">{{$categorie->title}}</span>
-            </div>
-            <span class="text-xs text-slate-500">{{$colocation->depences()->count()}} expense</span>
-          </div>
-          @endforeach
-        </div>
-      </section>
+     
 
       <!-- Quick actions -->
       <section class="bg-surface border border-borderSoft rounded-2xl p-6 fade-in">
@@ -387,7 +435,7 @@ tailwind.config = {
           @endforeach
         </select>
       </div>
-
+    <input type="hidden" name="colocation" value="{{$colocation}}">
       <div>
         <label class="block text-sm font-medium text-slate-300 mb-1.5" for="exp-paid-by">
           Paid by <span class="text-red-400">*</span>
