@@ -24,6 +24,9 @@ Route::middleware(['auth', 'verified',clientMiddleware::class])->group(function 
 Route::get('/home', [ColocationController::class,'index'])->name('home');
         // Colocation route
 Route::resource('colocation',ColocationController::class);
+Route::post('/extract', [ColocationController::class, 'extract'])->name('extract');
+
+
             // Categorie route
 Route::resource('categorie',CategorieController::class);
                 // Depence route

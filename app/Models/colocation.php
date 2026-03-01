@@ -12,7 +12,7 @@ class Colocation extends Model
     protected $fillable = ['name','state' ,'owner_id'];
     public function user():BelongsToMany
     {
-        return $this->belongsToMany(User::class,'membership')->withPivot('type');
+        return $this->belongsToMany(User::class,'membership')->withPivot('type','left_at');
     }
     public function categorie():HasMany{
         return $this->hasMany(Categorie::class);

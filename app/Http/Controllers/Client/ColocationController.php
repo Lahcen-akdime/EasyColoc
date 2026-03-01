@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller ;
 use App\Http\Services\Validator;
 use App\Models\colocation;
 use App\Models\membership;
+use App\Models\Membership as ModelsMembership;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,12 +56,18 @@ class ColocationController extends Controller
         $sumMembers = count($colocation->user);
         return view('client/show_colocation',compact('colocation','authuser','totalePrice','totaleExpences','sumMembers'));
     }
-    public function destroy(){}
-    public function edit(){}
+    public function extract(Request $request){
+        $membership = membership::where('user_id','=',$request->user_id)
+                                ->where('colocation_id','=',json_decode($request->colocation)->id)
+                                ->update(['left_at'=>now()]);
+        dd($membership);
+        return to_route('colocation.show',json_decode($request->colocation)->id);
+    }
     public function update(Request $request , colocation $colocation){
         $colocation->updateOrFail([
             'state' => 'inactive'
-        ]);
-        return to_route('home');
-    }
+            ]);
+            return to_route('home');
+            }
+            public function edit(){}
 }

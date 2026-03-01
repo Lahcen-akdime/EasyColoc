@@ -133,6 +133,8 @@ tailwind.config = {
         <h1 class="text-2xl font-semibold tracking-tight">{{$colocation->name}}</h1>
         <b class="text-slate-400 text-sm mt-1">____________________________</b>
       </div>
+      @foreach($colocation->user as $user)
+        @if($user->pivot->type=='owner' && $user->name==$authuser->name)
       <form method="post" action="{{route('colocation.update',$colocation->id)}}">
         @csrf 
         @method('PATCH')
@@ -140,6 +142,8 @@ tailwind.config = {
                 Anuller la colocation
         </button>
       </form>
+       @endif
+      @endforeach
       <div class="flex items-center gap-2 flex-wrap">
         @foreach($colocation->user as $user)
         @if($user->pivot->type=='owner' && $user->name==$authuser->name)
@@ -184,13 +188,15 @@ tailwind.config = {
       <section class="bg-surface border border-borderSoft rounded-2xl p-6 card-hover fade-in">
         <div class="flex items-center justify-between mb-5">
           <h2 class="text-base font-semibold">Members <span class="text-slate-500 font-normal text-sm ml-1">{{$sumMembers}}</span></h2>
-          <button class="text-xs text-primarySoft hover:underline">Invite member</button>
+          <button onclick="openModal('modal-invitation')" 
+           class="text-xs text-primarySoft hover:underline">Invite member</button>
         </div>
 
         <div class="divide-y divide-borderSoft">
 
           <!-- Member row -->
            @foreach($colocation->user as $user)
+           @if($user->pivot->left_at == null)
           <div class="row-hover flex items-center gap-4 py-3 px-2 -mx-2">
             <div class="w-10 h-10 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 text-xs font-semibold flex-shrink-0">{{substr($user->name,0,2)}}</div>
             <div class="flex-1 min-w-0">
@@ -201,11 +207,22 @@ tailwind.config = {
                 @else
                 <span class="text-xs bg-blue-500 text-amber-50 border border-blue-900 px-2 py-0.5 rounded-full">{{$user->pivot->type}}</span>
                 @endif
+                @if($authuser->name!=$user->name && ($authuser->colocation)[0]->pivot->type=='owner')
+                <form method="POST" action="{{route('extract')}}">
+                  @csrf 
+                  @method('POST')
+                  <input type="hidden" name="user_id" value="{{$user->id}}">
+                  <input type="hidden" name="colocation" value="{{$colocation}}">
+                  <input type="hidden" name="membership" value="{{$user->pivot}}">
+                  <button type="submit" class="text-xs bg-red-500 text-amber-50 border border-red-900 px-2 py-0.5 rounded-full">retier</button>
+                </form>
+                @endif
                 <span class="text-xs text-green-400 font-medium">{{$authuser->name==$user->name?'You':''}}</span>
               </div>
             </div>
           </div>
-          @endforeach
+           @endif
+           @endforeach
         </div>
       </section>
 
@@ -295,7 +312,7 @@ tailwind.config = {
               </svg>
             </div>
 
-            <span class="text-sm font-medium text-white truncate">{{ $paiment->touser->name }} ( {{$depence->title}} ) </span>
+            <span class="text-sm font-medium text-white truncate">{{ $paiment->touser->name }} ( {{$depence->title}} ) | {{$paiment->amount}}DH  </span>
           </div>
 
           @if($authuser->name==$paiment->fromuser->name )
@@ -361,7 +378,7 @@ tailwind.config = {
               <span class="text-base"></span>
               <span class="text-sm text-slate-300">{{$categorie->title}}</span>
             </div>
-            <span class="text-xs text-slate-500">{{$colocation->depences()->count()}} expense</span>
+            <span class="text-xs text-slate-500">{{$categorie->depence()->count()}} expense</span>
           </div>
           @endforeach
         </div>

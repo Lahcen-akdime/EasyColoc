@@ -50,7 +50,7 @@ class User extends Authenticatable
     }
     public function colocation():BelongsToMany
     {
-        return $this->belongsToMany(colocation::class,'membership');
+        return $this->belongsToMany(colocation::class,'membership')->withPivot('type','left_at');
     }
     public function depence():HasMany {
         return $this->hasMany(Depence::class);
