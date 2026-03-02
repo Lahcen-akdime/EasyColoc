@@ -91,7 +91,7 @@ tailwind.config = {
       <div class="flex items-center gap-2 bg-surface border border-borderSoft rounded-full px-3 py-1.5">
         <img src="https://ui-avatars.com/api/?name=Alex+M&background=334155&color=94a3b8&bold=true&size=60"
              alt="Alex M" class="w-7 h-7 rounded-full">
-        <span class="text-sm text-slate-300 font-medium">{{$username}}</span>
+        <span class="text-sm text-slate-300 font-medium">{{$user->name}}</span>
       </div>
       <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -129,13 +129,15 @@ tailwind.config = {
         <div class="divide-y divide-borderSoft">
 
           @foreach($colocations as $colocation)
-        
+          @if($colocation->pivot->left_at==null)
             <a href="{{route('colocation.show',$colocation)}}" class="row-hover flex items-center gap-4 py-4 px-3 -mx-3 block" >
               <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-xl flex-shrink-0">🏠</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
                   <p class="text-sm font-semibold text-slate-100">{{$colocation->name}}</p>
+                  @if($colocation->pivot->type=='owner')
                   <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full">★ Owner</span>
+                  @endif
                   @if($colocation->state == 'active')
                   <span class="text-xs bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded-full">active</span>
                   @else
@@ -151,12 +153,12 @@ tailwind.config = {
                     <img src="https://ui-avatars.com/api/?name=Marc+D&background=7c3aed&color=ddd6fe&bold=true&size=40" alt="">
                     <div class="extra">+2</div>
                   </div>
-                  <span class="text-xs text-slate-500">5 members</span>
+                  <span class="text-xs text-slate-500">{{$colocation->user()->count()}} members</span>
                 </div>
               </div>
               <svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
-    
+          @endif
           @endforeach
         </div>
       </section>
@@ -171,23 +173,19 @@ tailwind.config = {
             <option>2023</option>
           </select>
         </div>
-
+      @foreach($colocations as $colocation)
+        @if($colocation->pivot->left_at!=null)
         <div class="divide-y divide-borderSoft">
           <div class="py-4 flex justify-between items-center">
             <div>
-              <p class="font-medium text-sm">Lyon République</p>
-              <p class="text-xs text-slate-400 mt-0.5">Jan 2024 – Aug 2024</p>
+              <p class="font-medium text-sm">{{$colocation->name}}</p>
+              <p class="text-xs text-slate-400 mt-0.5">Left at : {{$colocation->pivot->left_at}}</p>
             </div>
-            <span class="text-xs text-slate-400 bg-soft px-3 py-1 rounded-full">Closed</span>
-          </div>
-          <div class="py-4 flex justify-between items-center">
-            <div>
-              <p class="font-medium text-sm">Bordeaux Centre</p>
-              <p class="text-xs text-slate-400 mt-0.5">Mar 2023 – Dec 2023</p>
-            </div>
-            <span class="text-xs text-slate-400 bg-soft px-3 py-1 rounded-full">Closed</span>
+            <span class="text-xs text-slate-400 bg-soft px-3 py-1 rounded-full">Lefted</span>
           </div>
         </div>
+        @endif
+      @endforeach
       </section>
 
     </div>
@@ -219,27 +217,12 @@ tailwind.config = {
         <div class="divide-y divide-borderSoft">
           <div class="flex justify-between items-center py-3">
             <span class="text-slate-400 text-sm">Total Joined</span>
-            <span class="font-semibold">4</span>
+            <span class="font-semibold">{{$user->depence()->count()}} 🏠</span>
           </div>
-          <div class="flex justify-between items-center py-3">
-            <span class="text-slate-400 text-sm">Currently Active</span>
-            <span class="font-semibold text-green-400">1</span>
-          </div>
-          <div class="flex justify-between items-center py-3">
-            <span class="text-slate-400 text-sm">As Owner</span>
-            <span class="font-semibold text-amber-400">2</span>
-          </div>
-          <div class="flex justify-between items-center py-3">
-            <span class="text-slate-400 text-sm">Pending Invites</span>
-            <span class="font-semibold text-yellow-400">1</span>
-          </div>
-          <div class="flex justify-between items-center py-3">
-            <span class="text-slate-400 text-sm">Expenses Shared</span>
-            <span class="font-semibold">6 430€</span>
-          </div>
+          
           <div class="flex justify-between items-center pt-3">
             <span class="text-slate-400 text-sm">Reputation</span>
-            <span class="font-semibold text-blue-400">+12 ⭐</span>
+            <span class="font-semibold text-blue-400">{{$user->evaluation}} ⭐</span>
           </div>
         </div>
       </section>

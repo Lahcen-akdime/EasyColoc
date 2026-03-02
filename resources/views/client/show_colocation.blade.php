@@ -133,8 +133,7 @@ tailwind.config = {
         <h1 class="text-2xl font-semibold tracking-tight">{{$colocation->name}}</h1>
         <b class="text-slate-400 text-sm mt-1">____________________________</b>
       </div>
-      @foreach($colocation->user as $user)
-        @if($user->pivot->type=='owner' && $user->name==$authuser->name)
+      @if(($authuser->colocation)[0]->pivot->type=='owner')
       <form method="post" action="{{route('colocation.update',$colocation->id)}}">
         @csrf 
         @method('PATCH')
@@ -142,18 +141,23 @@ tailwind.config = {
                 Anuller la colocation
         </button>
       </form>
+      @else
+        <form method="post" action="{{route('leave',$colocation)}}">
+        @csrf 
+        @method('DELETE')
+        <button type="submit" style="height: 3rem;" class="px-5 py-2.5 rounded-xl bg-red-400 text-white text-sm font-medium hover:bg-red-600 transition">
+                Leave colocation
+        </button>
+      </form>
        @endif
-      @endforeach
       <div class="flex items-center gap-2 flex-wrap">
-        @foreach($colocation->user as $user)
-        @if($user->pivot->type=='owner' && $user->name==$authuser->name)
+        @if(($authuser->colocation)[0]->pivot->type=='owner')
         <button onclick="openModal('modal-category')"
           class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           Add Category
         </button>
         @endif
-        @endforeach
         <button onclick="openModal('modal-expense')"
           class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primarySoft text-white text-sm font-medium hover:bg-blue-600 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -173,6 +177,9 @@ tailwind.config = {
         @endif
           @if(session('valide'))
           <p style="color:green">{{session('valide')}}</p>
+          @endif
+          @if(session('error'))
+          <p style="color:red">{{session('error')}}</p>
           @endif
       </div>
     </div>
@@ -209,7 +216,7 @@ tailwind.config = {
                 @endif
                 @if($authuser->name!=$user->name && ($authuser->colocation)[0]->pivot->type=='owner')
                 <form method="POST" action="{{route('extract')}}">
-                  @csrf 
+                  @csrf
                   @method('POST')
                   <input type="hidden" name="user_id" value="{{$user->id}}">
                   <input type="hidden" name="colocation" value="{{$colocation}}">
@@ -350,12 +357,12 @@ tailwind.config = {
             <span class="font-semibold text-blue-400">{{$totaleExpences}}</span>
           </div>
           <div class="flex justify-between items-center py-3">
-            <span class="text-slate-400 text-sm">Sum Expenses</span>
-            <span class="font-semibold">{{$totalePrice}} DH</span>
+            <span class="text-slate-400 text-sm">My credit</span>
+            <span class="font-semibold text-red-500">{{$credit}} DH</span>
           </div>
           <div class="flex justify-between items-center py-3">
-            <span class="text-slate-400 text-sm">Your Share</span>
-            <span class="font-semibold text-red-400">−DH</span>
+            <span class="text-slate-400 text-sm">My Share</span>
+            <span class="font-semibold text-green-600">{{$amounts}} DH</span>
           </div>
           <div class="flex justify-between items-center pt-3">
             <span class="text-slate-400 text-sm">Members</span>

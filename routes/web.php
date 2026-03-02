@@ -25,6 +25,7 @@ Route::get('/home', [ColocationController::class,'index'])->name('home');
         // Colocation route
 Route::resource('colocation',ColocationController::class);
 Route::post('/extract', [ColocationController::class, 'extract'])->name('extract');
+Route::delete('/leave/{colocation}', [ColocationController::class, 'leave'])->name('leave');
 
 
             // Categorie route

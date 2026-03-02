@@ -7,6 +7,7 @@ use App\Http\Services\Validator;
 use App\Models\colocation;
 use App\Models\membership;
 use App\Models\Membership as ModelsMembership;
+use App\Models\Paiment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,10 +19,10 @@ use function Laravel\Prompts\error;
 class ColocationController extends Controller
 {
     public function index(){
-        $username = Auth::user()->name;
-        $colocations = Auth::user()->colocation;
+        $user = Auth::user();
+        $colocations = Auth::user()->colocation ;
         
-        return view('client/home',compact('colocations','username'));
+        return view('client/home',compact('colocations','user'));
     }
     public function create(){
         return view('client/create_colocation');
@@ -51,10 +52,17 @@ class ColocationController extends Controller
     public function show(colocation $colocation){
         $username = Auth::user()->name;
         $authuser = Auth::user();
+        $amounts = Paiment::where('is_payed','=','payed')
+                             ->where('from_user_id','=',$authuser->id)
+                             ->sum('amount');
+        $credit = Paiment::where('is_payed','=','unpayed')
+                             ->where('from_user_id','=',$authuser->id)
+                             ->sum('amount');
         $totalePrice = $colocation->depences()->sum('price');
         $totaleExpences = count($colocation->depences) ;
         $sumMembers = count($colocation->user);
-        return view('client/show_colocation',compact('colocation','authuser','totalePrice','totaleExpences','sumMembers'));
+        return view('client/show_colocation',compact('colocation','authuser','totalePrice',
+                                                    'totaleExpences','sumMembers','amounts','credit'));
     }
     public function extract(Request $request){
         $membership = membership::where('user_id','=',$request->user_id)
@@ -63,11 +71,32 @@ class ColocationController extends Controller
         dd($membership);
         return to_route('colocation.show',json_decode($request->colocation)->id);
     }
-    public function update(Request $request , colocation $colocation){
+    public function update(colocation $colocation){
         $colocation->updateOrFail([
             'state' => 'inactive'
             ]);
             return to_route('home');
             }
+    public function leave(Colocation $colocation){
+        try {
+        DB::beginTransaction();
+        $membership = membership::where('user_id','=',Auth::user()->id)
+                  ->where('colocation_id','=',$colocation->id)
+                  ->update(['left_at'=>now()]);
+        $user = Auth::user() ;
+        $credit = Paiment::where('is_payed','=','unpayed')
+                             ->where('from_user_id','=',$user->id)
+                             ->count('*');
+        $evaluation = $user->evaluation ;
+        $user->update(['evaluation'=>$evaluation-$credit]);
+        DB::commit();
+        if($credit>1){
+            return to_route('colocation.index')->with('error','You leave with a credit in colocation ⚠️');
+        }
+            } catch (PDOException $e) {
+                DB::rollBack();
+                return $e->getMessage();
+            }
+    }
             public function edit(){}
 }

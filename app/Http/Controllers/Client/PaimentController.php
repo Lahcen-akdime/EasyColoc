@@ -54,6 +54,8 @@ class PaimentController extends Controller
     public function update(Paiment $paiment)
     {
         $paiment->update(['is_payed'=>'payed']);
+        $evaluation = $paiment->fromuser->evaluation ;
+        $paiment->fromuser->update(['evaluation'=>$evaluation+1]);
         return back()->with('valide','Paiment Stored Seccessfuly !');
     }
 
