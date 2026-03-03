@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('price');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('categorie_id')->constrained();
+            $table->foreignId('colocation_id')->constrained();
         });
     }
 

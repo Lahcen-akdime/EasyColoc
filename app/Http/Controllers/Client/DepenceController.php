@@ -43,7 +43,8 @@ class DepenceController extends Controller
         'title'=>$request->name ,
         'price'=>$request->price ,
         'categorie_id' => $request->categorie_id ,
-        'user_id' => $request->user_id
+        'user_id' => $request->user_id,
+        'colocation_id'=>json_decode($request->colocation)->id
         ]);
         $colocationUsers = json_decode($request->colocation)->user ;
         $amount = Calculator::calculateAmount($request->price,count($colocationUsers));

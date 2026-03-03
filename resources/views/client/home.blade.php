@@ -87,6 +87,9 @@ tailwind.config = {
          @if(session('error'))
           <p style="color:red">{{session('error')}}</p>
         @endif
+        @if(session('valide'))
+          <p style="color:green">{{session('valide')}}</p>
+        @endif
     <div class="flex items-center gap-3">
       <div class="flex items-center gap-2 bg-surface border border-borderSoft rounded-full px-3 py-1.5">
         <img src="https://ui-avatars.com/api/?name=Alex+M&background=334155&color=94a3b8&bold=true&size=60"
@@ -203,11 +206,15 @@ tailwind.config = {
         </div>
 
         <div class="flex gap-2">
-          <input type="text" placeholder="Invitation token…"
-            class="flex-1 bg-background border border-borderSoft rounded-xl px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primarySoft">
-          <button class="px-4 py-2.5 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition flex-shrink-0">
-            Join
-          </button>
+          <form action = "{{route('join')}}" method="post">
+            @csrf
+            @method('POST')
+            <input name="link" type="text" placeholder="Invitation token…"
+              class="flex-1 bg-background border border-borderSoft rounded-xl px-3 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primarySoft">
+            <button class="px-4 py-2.5 rounded-xl border border-borderSoft text-slate-300 text-sm font-medium hover:bg-soft transition flex-shrink-0">
+              Join
+            </button>
+          </form>
         </div>
       </section>
 

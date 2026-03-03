@@ -236,7 +236,7 @@ tailwind.config = {
       <!-- EXPENSES -->
       <section class="bg-surface border border-borderSoft rounded-2xl p-6 card-hover fade-in">
 
-        <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+        <!-- <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
           <h2 class="text-base font-semibold">Expenses</h2>
           <div class="flex items-center gap-2">
             <select class="select-field" aria-label="Filter by category">
@@ -251,7 +251,7 @@ tailwind.config = {
               <option>December 2024</option>
             </select>
           </div>
-        </div>
+        </div> -->
 
         <div class="divide-y divide-borderSoft">
 

@@ -65,11 +65,21 @@ class ColocationController extends Controller
                                                     'totaleExpences','sumMembers','amounts','credit'));
     }
     public function extract(Request $request){
-        $membership = membership::where('user_id','=',$request->user_id)
+        try {
+        DB::beginTransaction();
+        membership::where('user_id','=',$request->user_id)
                                 ->where('colocation_id','=',json_decode($request->colocation)->id)
                                 ->update(['left_at'=>now()]);
-        dd($membership);
+        Paiment::where('is_payed','=','unpayed')
+                         ->where('from_user_id','=',$request->user_id)
+                         ->update(['from_user_id'=>Auth::user()->id]);
+        DB::commit();
         return to_route('colocation.show',json_decode($request->colocation)->id);
+        } 
+        catch (PDOException $e) {
+                DB::rollBack();
+                return $e->getMessage();
+        }
     }
     public function update(colocation $colocation){
         $colocation->updateOrFail([
@@ -92,6 +102,9 @@ class ColocationController extends Controller
         DB::commit();
         if($credit>1){
             return to_route('colocation.index')->with('error','You leave with a credit in colocation ⚠️');
+        }
+        else{
+            return to_route('colocation.index')->with('valide','You leave the colocation cleanly ✅');
         }
             } catch (PDOException $e) {
                 DB::rollBack();

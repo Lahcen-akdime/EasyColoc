@@ -49,7 +49,7 @@ class InvitationController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @ colocation()
      */
     public function show(invitation $invitation)
     {
